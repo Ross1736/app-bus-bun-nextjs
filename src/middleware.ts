@@ -2,7 +2,6 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { envApp } from "./core/config/env";
-import { http } from "./core/http/client";
 
 export async function middleware(request: NextRequest) {
   const cookieStore = await cookies();
@@ -22,14 +21,20 @@ export async function middleware(request: NextRequest) {
   try {
     const token = cookieApp.value;
 
-    const path = `${envApp.auth}${envApp.auth_verify}`;
+    const path = `${envApp.baseURL}${envApp.path}${envApp.auth}${envApp.auth_verify}`;
 
-    const res = await http.get(path, {
-      headers: { Authorization: `Bearer ${token}` },
+    const res = await fetch(path, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     });
 
+    const data = await res.json();
+
     if (
-      res.data.status === 200 &&
+      data.status === 200 &&
       (pathname === "/login" || pathname === "/register")
     ) {
       return NextResponse.redirect(new URL("/", request.url));

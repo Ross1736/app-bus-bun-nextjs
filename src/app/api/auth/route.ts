@@ -1,6 +1,4 @@
 import { envApp } from "@/core/config/env";
-import { http } from "@/core/http/client";
-import axios, { type AxiosError } from "axios";
 import { cookies } from "next/headers";
 
 export const runtime = "edge";
@@ -11,20 +9,23 @@ export async function POST(request: Request) {
   const { email, password } = await request.json();
 
   try {
-    const path = `${envApp.auth}${envApp.auth_login}`;
+    const path = `${envApp.baseURL}${envApp.path}${envApp.auth}${envApp.auth_login}`;
 
-    const res = await http.post(path, {
-      email,
-      password,
+    const res = await fetch(path, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
     });
 
-    const resData = Response.json(res.data, {
-      status: res.data.status,
+    const data = await res.json();
+
+    const resData = Response.json(data, {
+      status: data.status,
     });
 
     cookieStore.set({
       name: "cookie-app",
-      value: res.data.token,
+      value: data.token,
       httpOnly: true,
       secure: true,
       sameSite: "strict",
@@ -34,15 +35,6 @@ export async function POST(request: Request) {
 
     return resData;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const e = error as AxiosError<{ status: number; message?: string }>;
-      const status = e.response?.data?.status ?? e.response?.status ?? 500;
-
-      return Response.json(e.response?.data ?? { status }, {
-        status,
-      });
-    }
-
     return Response.json(
       {
         status: 500,

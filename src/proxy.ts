@@ -4,6 +4,8 @@ import type { NextRequest } from "next/server";
 import { envApp } from "./core/config/env";
 import { http } from "./core/http/client";
 
+export const runtime = "edge";
+
 export async function proxy(request: NextRequest) {
   const cookieStore = await cookies();
 

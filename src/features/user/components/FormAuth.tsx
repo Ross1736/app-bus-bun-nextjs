@@ -103,7 +103,7 @@ function FormAuth({ type }: FormAuthProps) {
         </div>
       )}
 
-      <button>login</button>
+      <button>{type === "login" ? "login" : "register"}</button>
     </form>
   );
 }

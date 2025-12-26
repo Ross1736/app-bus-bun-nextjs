@@ -1,11 +1,16 @@
-import FormLogin from "@/features/user/components/FormLogin";
+import FormAuth from "@/features/user/components/FormAuth";
+import Link from "next/link";
 
 function page() {
   return (
     <div>
       <h2>login</h2>
 
-      <FormLogin />
+      <FormAuth type="login" />
+
+      <p>
+        Aun no tienes una cuenta? <Link href="/register">Regístrate</Link>
+      </p>
     </div>
   );
 }

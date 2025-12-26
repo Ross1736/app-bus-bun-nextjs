@@ -43,6 +43,12 @@ export async function POST(request: Request) {
       });
     }
 
-    return Response.json({ status: 500, message: "Error" }, { status: 500 });
+    return Response.json(
+      {
+        status: 500,
+        message: JSON.stringify(error, Object.getOwnPropertyNames(error)),
+      },
+      { status: 500 }
+    );
   }
 }

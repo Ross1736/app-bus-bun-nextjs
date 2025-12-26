@@ -3,6 +3,8 @@ import { http } from "@/core/http/client";
 import axios, { type AxiosError } from "axios";
 import { cookies } from "next/headers";
 
+export const runtime = "edge";
+
 export async function POST(request: Request) {
   const cookieStore = await cookies();
 

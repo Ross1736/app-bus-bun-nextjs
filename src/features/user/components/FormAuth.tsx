@@ -95,7 +95,7 @@ function FormAuth({ type }: FormAuthProps) {
           <label htmlFor="password">confirm password</label>
           <input
             id="confirm_password"
-            type="confirm_password"
+            type="password"
             name="confirm_password"
             value={formData.confirm_password}
             onChange={handleChangeInput}

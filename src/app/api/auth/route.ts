@@ -38,6 +38,7 @@ export async function POST(request: Request) {
     return Response.json(
       {
         status: 500,
+        version: 1,
         message: JSON.stringify(error, Object.getOwnPropertyNames(error)),
       },
       { status: 500 }
